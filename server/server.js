@@ -1,35 +1,27 @@
-var dvv = require('./dvv.js');
+imageUtils = require('./imageUtils.js');
 
-//Function to create arrays for testing purposes
-var createMatrixArrays = function(matrixSize, arrayLength){
-  var randomArray = function(n){
-    var result = [];
-    for(var i = 0; i < n ; i++){
-      var row = [];
-      for (var j = 0; j < n; j++){
-        row.push(Math.floor(Math.random()*100));
-      }
-      result.push(row);
-    }
-    return result;
-  };
+var init = function(dataArray, width, height){
+  console.log('DATA ARRAY:')
+  console.log(dataArray);
 
-  var result = [];
-  for(var i = 0; i < arrayLength; i++){
-    result.push(randomArray(matrixSize));
-  }
-  return result;
+  var dvv = require('./dvv.js');
+
+  // //Test : invert a matrix using math.js's math.inv function imported on client side
+  // //partitionLength is set to 1 by default
+  dvv.config({
+   staticPath: '/../client',
+   timeout: 25000,
+   // data: createMatrixArrays(200, 5),
+   data: dataArray,
+   width: width,
+   height: height,
+   func: 'math.inv',
+   clock: true
+   callback: function(results) { return results; }
+  });
+
+  dvv.start();
+
 };
 
-// //Test : invert a matrix using math.js's math.inv function imported on client side
-// //partitionLength is set to 1 by default
-dvv.config({
- staticPath: '/../client',
- timeout: 25000,
- data: createMatrixArrays(200, 5),
- func: 'math.inv',
- clock: true,
- callback: function(results) { return results; }
-});
-
-dvv.start();
+imageUtils.createDataArrayFromImageFile('server/rgb.png', init);
