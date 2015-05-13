@@ -1,4 +1,4 @@
-imageUtils = require('./imageUtils.js');
+imageUtils = require('./utils/image.js');
 
 var init = function(dataArray, width, height){
   console.log('DATA ARRAY:')
@@ -24,4 +24,4 @@ var init = function(dataArray, width, height){
 
 };
 
-imageUtils.createDataArrayFromImageFile('server/rgb.png', init);
+imageUtils.createDataArrayFromJpegFile('server/rgb.jpg', init);

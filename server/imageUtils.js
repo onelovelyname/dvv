@@ -1,9 +1,10 @@
 var fs = require('fs');
 var PNG = require('node-png').PNG;
- 
+var jpeg = require('jpeg-js');
+
 var imageUtils = {};
 
-imageUtils.createDataArrayFromImageFile = function(filename, callback){
+imageUtils.createDataArrayFromPngFile = function(filename, callback){
 
   fs.createReadStream(filename)
     .pipe( new PNG({ filterType: 4 }) )
@@ -25,6 +26,30 @@ imageUtils.createDataArrayFromImageFile = function(filename, callback){
       }
       callback(dataArray);
     });
+};
+
+imageUtils.createDataArrayFromJpegFile = function(filename, callback){
+
+  fs.readFile(filename, function (err, data) {
+    if (err) throw err;
+
+    var parsedData = jpeg.decode(data);
+
+    var dataArray = [];
+    for (var i=0; i<parsedData.data.length; i+=4) {
+      var r = parsedData.data[i];
+      var g = parsedData.data[i+1];
+      var b = parsedData.data[i+2];
+      var a = parsedData.data[i+3];
+      var rgba = [r,g,b,a];
+
+      dataArray.push(rgba);
+    }
+ 
+    callback(dataArray);
+
+  });
+
 };
 
 module.exports = imageUtils;
