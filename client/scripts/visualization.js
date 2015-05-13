@@ -140,6 +140,9 @@ var displayCompletion = function(results){
     var color = d3.scale.category20();
 
     var bubble = d3.layout.pack()
+      .sort(function(a, b) {
+        return b.count - a.count;
+      })
       .size([width-600, height])
       .value(function(d) { // each bubble's value is based on the count of completed data packets by each client
         return d.count;
