@@ -123,6 +123,19 @@ var displayCompletion = function(results){
         .attr('class', 'summary-heading')
         .text('Total Data Packets Completed by Client');
 
+    // tooltip is shown when hovering over bubble nodes
+    var tooltip = d3.select('body')
+      .append('div')
+      .style({
+        'background-color': 'rgba(0, 0, 0, 0.75)',
+        color: '#fff',
+        'font-size': '16px',
+        padding: '5px',
+        position: 'absolute',
+        visibility: 'hidden'
+      })
+      .text('tooltip');
+
     var format = d3.format(',d');
     var color = d3.scale.category20();
 
@@ -143,17 +156,39 @@ var displayCompletion = function(results){
 
     node.append('circle')
       .attr('r', function(d) { return d.r; })
-      .style('fill', function(d) { return color(d.name); });
+      .style('fill', function(d) { return color(d.name); })
+      .on('mouseover', function(d) {
+        tooltip.style('visibility', 'visible').text(d.name + ': ' + format(d.count));
+      })
+      .on('mousemove', function() {
+        tooltip.style({
+          top: (d3.event.pageY-10)+'px',
+          left: (d3.event.pageX+10)+'px'
+        });
+      })
+      .on('mouseout', function() {
+        tooltip.style('visibility', 'hidden');
+      });
 
-    node.append('title')
-      .text(function(d) { return d.name + ': ' + format(d.count); });
-
+    // Add label for each bubble
     node.append('text')
       .attr('dy', '0.3em')
       .style('text-anchor', 'middle')
       .text(function(d) {
         var text = d.name + ': ' + format(d.count);
         return text.substring(0, d.r / 5); // cuts off text if it is wider than the circle
+      })
+      .on('mouseover', function(d) {
+        tooltip.style('visibility', 'visible').text(d.name + ': ' + format(d.count));
+      })
+      .on('mousemove', function() {
+        tooltip.style({
+          top: (d3.event.pageY-10)+'px',
+          left: (d3.event.pageX+10)+'px'
+        });
+      })
+      .on('mouseout', function() {
+        tooltip.style('visibility', 'hidden');
       });
   }
 };
