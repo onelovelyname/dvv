@@ -38,7 +38,7 @@ function restart() {
     .attr('fill-opacity', 1)
     .attr('stroke', '#E1499A')
     .attr('stroke-width', 10)
-    .attr('stroke-opacity', .5);
+    .attr('stroke-opacity', 0.5);
  
   node.exit().remove();
 
@@ -48,7 +48,7 @@ function restart() {
 // display connected clients to screen
 var updateConnected = function(n){
   d3.select('.connectedCounter span').text(n);
-}
+};
 
 // animated explosion when data is received
 var onDataAnim = function(){
@@ -66,21 +66,21 @@ var onDataAnim = function(){
       .attr("r", 1000)
       .transition()
       .duration(0)
-      .attr("r", 5)
-}
+      .attr("r", 5);
+};
 
 // Change force layout properties for "agitated" state animation
 var startAnim = function(){
   force.charge(100)
-  .gravity(.2)
-  .friction(1)
-}
+    .gravity(0.2)
+    .friction(1);
+};
 
 // Change force layout properties for "resting" state animation
 var stopAnim = function(){
   force.charge(0)
     .gravity(1)
-    .friction(0)
+    .friction(0);
 
   // make one node Explode!
   svg.select(".node")
@@ -98,14 +98,65 @@ var stopAnim = function(){
     .attr("r", 15)
     .attr('stroke-width', 15);
 
- // Change background from black to white to pink
- svg.style('background-color', '#FFF');
- svg.transition().style('background-color', '#E1499A').delay(1).duration(500);
-}
+  // Change background from black to white to pink
+  svg.style('background-color', '#FFF');
+  svg.transition().style('background-color', '#E1499A').delay(1).duration(500);
+};
+
+// display stats for showing how many packets each client completed
+var displayCompletion = function(results){
+  if (results) {
+    // Remove flasing nodes from screen
+    svg.selectAll('.flash-node, .node').remove();
+
+    // ******************** //
+    // Display bubble chart //
+    // ******************** //
+    
+    // Resize summary svg to not overlap the side svg's
+    svg.attr('class', 'summary')
+      .attr('width', width-600)
+      .attr('height', height);
+
+    d3.select('body')
+      .append('div')
+        .attr('class', 'summary-heading')
+        .text('Total Data Packets Completed by Client');
+
+    var format = d3.format(',d');
+    var color = d3.scale.category20();
+
+    var bubble = d3.layout.pack()
+      .size([width-600, height])
+      .value(function(d) { // each bubble's value is based on the count of completed data packets by each client
+        return d.count;
+      });
+
+    var nodes = bubble.nodes({children: results})
+      .filter(function(d) { return !d.children; }); // filter out the outer bubble
+
+    var node = svg.selectAll('.node')
+      .data(nodes, function(d) { return d.name; })
+      .enter()
+      .append('g')
+      .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; });
+
+    node.append('circle')
+      .attr('r', function(d) { return d.r; })
+      .style('fill', function(d) { return color(d.name); });
+
+    node.append('title')
+      .text(function(d) { return d.name + ': ' + format(d.count); });
+
+    node.append('text')
+      .attr('dy', '0.3em')
+      .style('text-anchor', 'middle')
+      .text(function(d) {
+        var text = d.name + ': ' + format(d.count);
+        return text.substring(0, d.r / 5); // cuts off text if it is wider than the circle
+      });
+  }
+};
 
 // agitate the system for contant movement
 d3.timer(restart);
-
-
-
-

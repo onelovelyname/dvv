@@ -74,6 +74,25 @@ h1 {
     font-weight: bold;
 }
 
+.summary {
+  position: absolute;
+  left: 300px;
+}
+
+.summary text {
+  fill: #fff;
+  font-size: 22px;
+}
+
+.summary-heading {
+  color: #fff;
+  font-size: 28px;
+  position: absolute;
+  text-align: center;
+  top: 5px;
+  width: 100%;
+}
+
 @-webkit-keyframes redPulse {
   from {
     fill: #E1499A;

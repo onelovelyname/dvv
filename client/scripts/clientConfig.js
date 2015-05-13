@@ -3,6 +3,7 @@ dvvClientConfig({
   "onReady": startAnim,     // agitate force layout
   "onProgress": updateProgress, // update progess meter
   "onEndProgress": stopAnim, 
+  "onResults": displayCompletion, // display final results
   "numberOfWorkers": 3
 });
 
