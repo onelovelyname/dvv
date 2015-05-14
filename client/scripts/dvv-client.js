@@ -85,12 +85,11 @@ var dvvClientStart = function(){
 
     //Have our slave process listen to when web worker finishes computation
     worker.addEventListener('message', function(e) {
-      console.log ("Worker has finished computing", data.id);
       //Send the results if successful
       socket.emit('completed', {
         "id": data.id,
         "result": e.data,
-				"client":socket.id
+	"client":socket.id
 
 
       });
@@ -132,7 +131,6 @@ var dvvClientStart = function(){
   // Receives connected client info from server and visualizes it
   socket.on('clientChange', function(data) {
     connectedClients = data.availableClients ;
-		//console.log(data.availableClients);
     updateConnected(connectedClients);
   });
 }
