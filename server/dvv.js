@@ -158,11 +158,8 @@ dvv.start = function(){
 
 		// populate the scoreboard with and object that details client and score.
 		var clientId = socket.conn.id;
-		var obj = [clientId,0];
-
 		scoreBoard[clientId] = 0;
 
-		console.log("Scoreboard:", scoreBoard);
 		//Notify everyone a new client has been added
     io.emit('clientChange', {
       availableClients : availableClients.length
