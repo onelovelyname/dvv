@@ -214,7 +214,8 @@ dvv.start = function(){
 				for(var val in scoreBoard) {
 					if (scoreBoard.hasOwnProperty(val)) {
 						var newObj = {};
-						newObj[val] =  scoreBoard[val];
+						newObj['name'] = val;
+						newObj['count'] = scoreBoard[val];
 						scoresArr.push(newObj);
 					}
 				}
