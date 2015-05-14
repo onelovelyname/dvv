@@ -1,6 +1,8 @@
 var express = require('express');
 var http = require('http');
 var favicon = require('serve-favicon');
+var colorSpace = require('color-space');
+var DeltaE = require('delta-e');
 
 //Initiate server variables in global scope
 var server;
@@ -196,14 +198,20 @@ dvv.start = function(){
       //**NOTE: this implies late packages will be chucked aside
       if (data.id !== -1 && pendingPackets[data.id]){
         delete pendingPackets[data.id];
+        var redGrayCounter = data.result.slice(data.result.length - 2);
+        data.result = data.result.slice(0, data.result.length - 2);
+        console.log(redGrayCounter);
+        console.log("completed listener", data.result);
+        
         completedPackets.insert(data);
 
+        console.log(completedPackets);
 				var clientId = socket.conn.id;
 				scoreBoard[clientId]++;
 
         // Update everyone on the current progress
         // This can be limited or removed to reduce congestion
-        progressReport();
+        progressReport(data, redGrayCounter);
       }
 
       if (completedPackets.size() === partitionedData.length){
@@ -289,9 +297,11 @@ dvv.start = function(){
   }
 
   //Broadcast progress to all clients
-  function progressReport(){
+  function progressReport(data, redGrayCounter){
     io.emit('progress', { 
-      progress : completedPackets.size() / partitionedData.length
+      progress : completedPackets.size() / partitionedData.length,
+      data: data,
+      redGrayCounter: redGrayCounter
     });
 
   }

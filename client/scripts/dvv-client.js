@@ -7,20 +7,21 @@ var NUMBER_OF_WORKERS = 1;
 
 var ON_DATA = function(data){
   console.log(data);
-}
+};
 var ON_READY = function(){
   console.log("Ready");
-}
+};
 var ON_PROGRESS = function(data){
-  console.log(data);
-}
+  console.log(data.progress);
+};
+
 var ON_END_PROGRESS = function(){
   console.log("Computation Complete, assembling results...");
-}
+};
 
 var ON_RESULTS = function(results){
   console.log(results);
-}
+};
 
 var dvvClientConfig = function(params){
   if('onData' in params){
@@ -86,7 +87,7 @@ var dvvClientStart = function(){
       socket.emit('completed', {
         "id": data.id,
         "result": e.data,
-	"client":socket.id
+	      "client":socket.id
       });
       //Kill the worker
       worker.terminate();
@@ -94,6 +95,7 @@ var dvvClientStart = function(){
 
     //Have our slave process listen to errors from web worker
     worker.addEventListener('error', function(e){
+      console.log(e);
       console.log("Worker has encountered an error with computation");
       //Send an error message back to master process
       socket.emit('completed', {
@@ -110,7 +112,7 @@ var dvvClientStart = function(){
 
   // Receives progress info from server and visualizes it.
   socket.on('progress', function(data) {
-    ON_PROGRESS(data.progress);
+    ON_PROGRESS(data);
 
     // Displays complete animation
     if (data.progress >= 1) {

@@ -1,3 +1,5 @@
+// Progress Circle
+
 // general style for progress circle
 var color = '#E1499A';
 var radius = 100;
@@ -68,13 +70,147 @@ var numberText = meter.append('text')
     .attr('text-anchor', 'middle')
     .attr('dy', '.35em');
 
+
 // update progress display 
-function updateProgress(progress) {
-    console.log(progress);
-    foreground.attr('d', arc.endAngle(twoPi * progress));
-    front.attr('d', arc.endAngle(twoPi * progress));
-    numberText.text(formatPercent(progress));
+function updateProgress(data) {
+    //console.log(data);
+    foreground.attr('d', arc.endAngle(twoPi * data.progress));
+    front.attr('d', arc.endAngle(twoPi * data.progress));
+    numberText.text(formatPercent(data.progress));
+    displayProgress(data.redGrayCounter);
 }
+
+var displayProgress = function(counter) {
+  var data = [
+    { label: 'red', count: counter[0] },
+    { label: 'non-red', count: counter[1] }
+  ];
+  console.log(data);
+  var width = 200;
+  var height = 200;
+  var radius = Math.min(width, height) / 2;
+  var donutWidth = 20;
+  var legendRectSize = 20;
+  var legendSpacing = 5;
+  var color = d3.scale.ordinal().range(['#d62728', '#7f7f7f']);
+
+   d3.select('div#semicircleResults svg').remove();
+   d3.select('.progress-heading').remove();
+
+d3.select('div#semicircleResults')
+  .append('div')
+  .attr('class', 'progress-heading')
+  .text('Thanks for helping us process our image!');
+
+  var svg = d3.select('div#semicircleResults')
+    .append('svg')
+    .attr('width', width)
+    .attr('height', height)
+    .style('display', 'block')
+    .style('margin', '0 auto')
+    .style('position', 'absolute')
+    .style('top', '400px')
+    .style('right', '50px')
+    .append('g')
+    .attr('transform', 'translate(' + (width/2) + ',' + (height/2) + ')');
+
+
+
+  var arc = d3.svg.arc()
+    .innerRadius(radius - donutWidth)
+    .outerRadius(radius);
+
+  var pie = d3.layout.pie()
+    .value(function(d) {
+      return d.count;
+    })
+    .sort(null);
+
+  var path = svg.selectAll('path')
+    .data(pie(data))
+    .enter()
+    .append('path')
+    .attr('d', arc)
+    .attr('fill', function(d, i){
+      // 'd' here refers to an object with data, value, startAngle, endAngle, and padAngle properties
+      return color(d.data.label);
+    });
+
+  path.on('mouseover', function(d) {
+    var total = counter[0] + counter[1];
+    var percent = Math.round(1000 * (d.data.count / total) / 10);
+    tooltip.select('.toolTipLabel').html(d.data.label);
+    tooltip.select('.count').html(d.data.count);
+    tooltip.select('.percent').html(percent + "%");
+    tooltip.style('display', 'block');
+  });
+
+  path.on('mousemove', function() {
+    tooltip.style({
+      top: (d3.event.pageY-10)+'px',
+      left: (d3.event.pageX+10)+'px'
+    });
+  });
+
+  path.on('mouseout', function(d) {
+    tooltip.style('display', 'none');
+  });
+
+  var legend = svg.selectAll('.legend')
+    .data(color.domain())
+    .enter()
+    .append('g')
+    .attr('class', 'legend')
+    .attr('transform', function (d, i){
+      var height = legendRectSize + legendSpacing;
+      var offset = height * color.domain().length / 2;
+      var horz = -2 * legendRectSize;
+      var vert = i * height - offset;
+      return 'translate(' + horz + ',' + vert + ')';
+    });
+
+  legend.append('rect')
+    .attr('width', legendRectSize)
+    .attr('height', legendRectSize)
+    .style('fill', color)
+    .style('stroke', color);
+
+  legend.append('text')
+    .attr('x', legendRectSize + legendSpacing)
+    .attr('y', legendRectSize - legendSpacing)
+    .text(function(d) { return d; })
+    .attr('fill', '#fff');
+
+  var tooltip = d3.select('div#semicircleResults')
+    .append('div')
+    .attr('class', 'tooltip');
+
+  tooltip.append('div')
+    .attr('class', 'toolTipLabel');
+
+  tooltip.append('div')
+    .attr('class', 'count');
+
+  tooltip.append('div')
+    .attr('class', 'percent');
+
+
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
