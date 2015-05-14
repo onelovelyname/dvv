@@ -192,7 +192,7 @@ dvv.start = function(){
 
         // Update everyone on the current progress
         // This can be limited or removed to reduce congestion
-        progressReport();
+        progressReport(data);
       }
 
       if (completedPackets.size() === partitionedData.length){
@@ -280,9 +280,10 @@ dvv.start = function(){
   }
 
   //Broadcast progress to all clients
-  function progressReport(){
+  function progressReport(data){
     io.emit('progress', { 
-      progress : completedPackets.size() / partitionedData.length
+      progress : completedPackets.size() / partitionedData.length,
+      data: data
     });
 
   }
