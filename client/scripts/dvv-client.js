@@ -64,6 +64,9 @@ var clientRdy = function(btn){
 var dvvClientStart = function(){
   connectedClients = 0;
   socket = io.connect();
+
+	var clientId = socket.id;
+	//console.log("The id of the client is", socket.id);
   //Predefined function just returns the element
   func = 'element';
 
@@ -82,11 +85,14 @@ var dvvClientStart = function(){
 
     //Have our slave process listen to when web worker finishes computation
     worker.addEventListener('message', function(e) {
-      console.log ("Worker has finished computing");
+      console.log ("Worker has finished computing", data.id);
       //Send the results if successful
       socket.emit('completed', {
         "id": data.id,
-        "result": e.data
+        "result": e.data,
+				"client":socket.id
+
+
       });
       //Kill the worker
       worker.terminate();
@@ -126,6 +132,7 @@ var dvvClientStart = function(){
   // Receives connected client info from server and visualizes it
   socket.on('clientChange', function(data) {
     connectedClients = data.availableClients ;
+		//console.log(data.availableClients);
     updateConnected(connectedClients);
   });
 }
