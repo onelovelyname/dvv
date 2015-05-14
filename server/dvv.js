@@ -156,16 +156,14 @@ dvv.start = function(){
 
 		availableClients.push(socket);
 
+		// populate the scoreboard with and object that details client and score.
 		var clientId = socket.conn.id;
-		console.log("on connection:", clientId);
 		var obj = {
 			name:clientId,
 			count:0
 		};
-
-		//obj[clientId] = 0;
 		scoreBoard.push(obj);
-		console.log("this is the scoreboard: ", scoreBoard);
+
 		//Notify everyone a new client has been added
     io.emit('clientChange', {
       availableClients : availableClients.length
