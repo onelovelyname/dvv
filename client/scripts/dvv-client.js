@@ -64,7 +64,6 @@ var clientRdy = function(btn){
 var dvvClientStart = function(){
   connectedClients = 0;
   socket = io.connect();
-
   //Predefined function just returns the element
   func = 'element';
 
@@ -88,8 +87,6 @@ var dvvClientStart = function(){
         "id": data.id,
         "result": e.data,
 	"client":socket.id
-
-
       });
       //Kill the worker
       worker.terminate();
