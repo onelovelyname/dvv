@@ -28,7 +28,8 @@ dvv.config({
  timeout: 25000,
  data: createMatrixArrays(200, 5),
  func: 'math.inv',
- clock: true
+ clock: true,
+ callback: function(results) { return results; }
 });
 
 dvv.start();

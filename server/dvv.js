@@ -34,7 +34,7 @@ var DATA = [1, 2, 3];
 var PARTITION_LENGTH = 1;
 
 //Callback to be made on complete of entire distributed task
-var CALLBACK = function(results){ console.log(results); return results; };
+	var CALLBACK = function(results){ console.log(results);  return results; };
 
 //Set a timer to measure the duration of entire distributed task
 //For testing purposes
@@ -114,6 +114,8 @@ dvv.start = function(){
   //Array of sockets of available clients
   var availableClients = [];
 
+	var scoreBoard = {};
+
   //Collection of unsent packets prioritized using a min heap
   var unsentPackets = new MinHeap();
 
@@ -152,16 +154,20 @@ dvv.start = function(){
       console.time('timer');
     }
 
-    console.log('New Connection');
-    availableClients.push(socket);
+		availableClients.push(socket);
 
-    //Notify everyone a new client has been added
-    io.emit('clientChange', { 
-      availableClients : availableClients.length 
+		// populate the scoreboard with and object that details client and score.
+		var clientId = socket.conn.id;
+		scoreBoard[clientId] = 0;
+
+		//Notify everyone a new client has been added
+    io.emit('clientChange', {
+      availableClients : availableClients.length
     });
 
     //When client is ready, send them a packet
     socket.on('ready', function() {
+
       console.log('Client Ready');
       progressReport();
       sendNextAvailablePacket(socket);
@@ -178,7 +184,10 @@ dvv.start = function(){
       if (data.id !== -1 && pendingPackets[data.id]){
         delete pendingPackets[data.id];
         completedPackets.insert(data);
-        
+
+				var clientId = socket.conn.id;
+				scoreBoard[clientId]++;
+
         // Update everyone on the current progress
         // This can be limited or removed to reduce congestion
         progressReport();
@@ -199,9 +208,23 @@ dvv.start = function(){
 
         //Set callback funcrion using dvv.config to perform operations on the finished results
         var results =  callback(finishedResults);
+
+				// Reformat the scores to be an array of objects.
+				var scoresArr = [];
+				for(var val in scoreBoard) {
+					if (scoreBoard.hasOwnProperty(val)) {
+						var newObj = {};
+						newObj['name'] = val;
+						newObj['count'] = scoreBoard[val];
+						scoresArr.push(newObj);
+					}
+				}
+				
+				var scores =  callback(scoresArr);
         
         io.emit('complete',  { 
-          results : results 
+          results : results,
+					score: scores
         });
 
       } else {
