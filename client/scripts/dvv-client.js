@@ -120,7 +120,7 @@ var dvvClientStart = function(){
   });
 
   socket.on('complete', function(data){
-    ON_RESULTS(data.results);
+    ON_RESULTS(data.score);
   });
 
   // Receives connected client info from server and visualizes it
