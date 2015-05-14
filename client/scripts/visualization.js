@@ -118,16 +118,21 @@ var displayCompletion = function(results){
       .attr('width', width-600)
       .attr('height', height);
 
+    var totalPackets = d3.sum(results, function(d) {
+      return d.count;
+    });
+
     d3.select('body')
       .append('div')
         .attr('class', 'summary-heading')
-        .text('Total Data Packets Completed by Client');
+        .text('Total Data Packets Processed: ' + totalPackets);
 
     // tooltip is shown when hovering over bubble nodes
     var tooltip = d3.select('body')
       .append('div')
       .style({
         'background-color': 'rgba(0, 0, 0, 0.75)',
+        'border-radius': '5px',
         color: '#fff',
         'font-size': '16px',
         padding: '5px',
@@ -179,7 +184,7 @@ var displayCompletion = function(results){
       .style('text-anchor', 'middle')
       .text(function(d) {
         var text = d.name + ': ' + format(d.count);
-        return text.substring(0, d.r / 5); // cuts off text if it is wider than the circle
+        return text.substring(0, d.r / 6); // cuts off text if it is wider than the circle
       })
       .on('mouseover', function(d) {
         tooltip.style('visibility', 'visible').text(d.name + ': ' + format(d.count));
