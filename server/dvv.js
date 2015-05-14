@@ -34,7 +34,7 @@ var DATA = [1, 2, 3];
 var PARTITION_LENGTH = 1;
 
 //Callback to be made on complete of entire distributed task
-	var CALLBACK = function(results){ /*console.log(results); */ return results; };
+	var CALLBACK = function(results){ console.log(results);  return results; };
 
 //Set a timer to measure the duration of entire distributed task
 //For testing purposes
