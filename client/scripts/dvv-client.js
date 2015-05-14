@@ -65,8 +65,6 @@ var dvvClientStart = function(){
   connectedClients = 0;
   socket = io.connect();
 
-	var clientId = socket.id;
-	//console.log("The id of the client is", socket.id);
   //Predefined function just returns the element
   func = 'element';
 
