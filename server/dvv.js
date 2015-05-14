@@ -221,7 +221,6 @@ dvv.start = function(){
 				}
 				
 				var scores =  callback(scoresArr);
-        
         io.emit('complete',  { 
           results : results,
 					score: scores

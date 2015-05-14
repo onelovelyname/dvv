@@ -24,7 +24,7 @@ imageUtils.createDataArrayFromPngFile = function(filename, callback){
 
         }
       }
-      callback(dataArray);
+      callback({data:dataArray});
     });
 };
 
@@ -46,7 +46,9 @@ imageUtils.createDataArrayFromJpegFile = function(filename, callback){
       dataArray.push(rgba);
     }
  
-    callback(dataArray);
+    callback({data:dataArray, callback:function(){
+      console.log('Finished Processing, Running callback...'); 
+    }});
 
   });
 
