@@ -114,7 +114,7 @@ dvv.start = function(){
   //Array of sockets of available clients
   var availableClients = [];
 
-	var scoreBoard = [];
+	var scoreBoard = {};
 
   //Collection of unsent packets prioritized using a min heap
   var unsentPackets = new MinHeap();
@@ -158,12 +158,11 @@ dvv.start = function(){
 
 		// populate the scoreboard with and object that details client and score.
 		var clientId = socket.conn.id;
-		var obj = {
-			name:clientId,
-			count:0
-		};
-		scoreBoard.push(obj);
+		var obj = [clientId,0];
 
+		scoreBoard[clientId] = 0;
+
+		console.log("Scoreboard:", scoreBoard);
 		//Notify everyone a new client has been added
     io.emit('clientChange', {
       availableClients : availableClients.length
@@ -190,12 +189,7 @@ dvv.start = function(){
         completedPackets.insert(data);
 
 				var clientId = socket.conn.id;
-
-				scoreBoard.filter(function(val){
-					if(val.name === clientId){
-						val.count++;
-					}
-				});
+				scoreBoard[clientId]++;
 
         // Update everyone on the current progress
         // This can be limited or removed to reduce congestion
@@ -216,10 +210,23 @@ dvv.start = function(){
         }
 
         //Set callback funcrion using dvv.config to perform operations on the finished results
-        var results =  callback(scoreBoard);
+        var results =  callback(finishedResults);
+
+				// Reformat the scores to be an array of objects.
+				var scoresArr = [];
+				for(var val in scoreBoard) {
+					if (scoreBoard.hasOwnProperty(val)) {
+						var newObj = {};
+						newObj[val] =  scoreBoard[val];
+						scoresArr.push(newObj);
+					}
+				}
+				
+				var scores =  callback(scoresArr);
         
         io.emit('complete',  { 
-          results : results
+          results : results,
+					score: scores
         });
 
       } else {
