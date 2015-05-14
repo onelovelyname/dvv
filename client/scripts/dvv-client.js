@@ -94,6 +94,7 @@ var dvvClientStart = function(){
 
     //Have our slave process listen to errors from web worker
     worker.addEventListener('error', function(e){
+      console.log(e);
       console.log("Worker has encountered an error with computation");
       //Send an error message back to master process
       socket.emit('completed', {

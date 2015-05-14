@@ -1,6 +1,8 @@
 var express = require('express');
 var http = require('http');
 var favicon = require('serve-favicon');
+var colorSpace = require('color-space');
+var DeltaE = require('delta-e');
 
 //Initiate server variables in global scope
 var server;
