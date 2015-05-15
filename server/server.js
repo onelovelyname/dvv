@@ -1,9 +1,8 @@
 var imageUtils = require('./utils/image.js');
 var utils = require('./utils/utils.js');
+var dvv = require('./dvv.js');
 
 var init = function(dataArray, width, height){
-
-  var dvv = require('./dvv.js');
 
   dvv.config({
     staticPath: '/../client',
@@ -13,11 +12,16 @@ var init = function(dataArray, width, height){
     height: height,
     func: 'math.inv',
     clock: true,
-    callback: function(results) { return results; }
+    callback: function(results, width, height) {
+      var file = __dirname + '/../client/img/results.jpg';
+      imageUtils.createJpegFileFromDataArray(file, results, width, height, function(){
+        console.log('Finished creating file:', file);
+      });
+    }
   });
 
   dvv.start();
 
 };
 
-imageUtils.createDataArrayFromJpegFile(__dirname + '/assets/500x500.jpg', init);
+imageUtils.createDataArrayFromJpegFile(__dirname + '/assets/rgb.jpg', init);
