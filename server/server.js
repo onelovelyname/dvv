@@ -20,4 +20,4 @@ var init = function(dataArray, width, height){
 
 };
 
-imageUtils.createDataArrayFromJpegFile('server/rgb.jpg', init);
+imageUtils.createDataArrayFromJpegFile(__dirname + '/assets/500x500.jpg', init);
