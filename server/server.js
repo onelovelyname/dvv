@@ -12,7 +12,7 @@ var init = function(dataArray, width, height){
     width: width,
     height: height,
     func: 'math.inv',
-    clock: true
+    clock: true,
     callback: function(results) { return results; }
   });
 
