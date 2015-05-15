@@ -198,6 +198,9 @@ var displayCompletion = function(results){
       .on('mouseout', function() {
         tooltip.style('visibility', 'hidden');
       });
+
+    // Display thumbnail of the modified image in the left sidebar
+    d3.select('.modified-image').style('display', 'block');
   }
 };
 

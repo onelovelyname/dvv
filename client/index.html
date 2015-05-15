@@ -1,5 +1,4 @@
 <!doctype html>
-
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -13,7 +12,7 @@
   <link rel="apple-touch-icon" sizes="144x144" href="img/apple-icon-144x144.png">
   <link rel="apple-touch-icon" sizes="152x152" href="img/apple-icon-152x152.png">
   <link rel="apple-touch-icon" sizes="180x180" href="img/apple-icon-180x180.png">
-  <link rel="icon" type="image/png" sizes="192x192"  href="img/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="img/android-icon-192x192.png">
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="96x96" href="img/favicon-96x96.png">
   <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
@@ -23,20 +22,24 @@
   <meta name="theme-color" content="#ffffff">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
   <link rel="stylesheet" href="styles/styles.css">
-  <script src = "https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
   <script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/1.6.0/math.min.js"></script>
 </head>
 <body>
-  <div class = "wrapper">
-    <div class ="upperLeft">  
+  <div class="wrapper">
+    <div class="upperLeft">
       <h1>dvv</h1>
-      <img id="dvv-logo" src = "styles/dvv-logo copy.png">
-      <button id="rdy" class="btn btn-default" onclick ="clientRdy(this);this.disabled = true">Begin</button>
-      <div class ="connectedCounter">Connected: <span></span></div>
+      <img id="dvv-logo" src="styles/dvv-logo copy.png">
+      <button id="rdy" class="btn btn-default" onclick="clientRdy(this);this.disabled=true">Begin</button>
+      <div class="connectedCounter">Connected: <span></span></div>
+      <div class="modified-image">
+        <h4>Result:</h4>
+        <a href="img/results.jpg"><img src="img/results.jpg" alt="Modified image"></a>
+      </div>
     </div>
-<div id="progressBox"></div>
-</div>
+  <div id="progressBox"></div>
+  </div>
   
   <script src="scripts/progress.js"></script>
   <script src="scripts/visualization.js"></script>
