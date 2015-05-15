@@ -40,6 +40,10 @@ var PARTITION_LENGTH = 1;
 //For testing purposes
 var CLOCK = false;
 
+// results image resolution (width x height)
+var IMAGE_WIDTH = 8;
+var IMAGE_HEIGHT = 8;
+
 //Define export dvv object
 var dvv = {};
 
@@ -78,6 +82,15 @@ dvv.config = function(params){
   if('clock' in params){
     CLOCK = params.clock;
   }
+
+  if('width' in params){
+    IMAGE_WIDTH = params.width;
+  }
+
+  if('height' in params){
+    IMAGE_HEIGHT = params.height;
+  }
+
 };
 
 dvv.start = function(){
@@ -122,7 +135,7 @@ dvv.start = function(){
   //Collection of send packages that have not been completed
   //object keys are set to corresponding packet ids
   var pendingPackets = {};
-  
+
   //Collection of completed packets prioritized using a min heap
   var completedPackets = new MinHeap();
 
@@ -207,7 +220,7 @@ dvv.start = function(){
         }
 
         //Set callback funcrion using dvv.config to perform operations on the finished results
-        var results =  callback(finishedResults);
+        var results =  callback(finishedResults, IMAGE_WIDTH, IMAGE_HEIGHT);
 
 				// Reformat the scores to be an array of objects.
 				var scoresArr = [];
