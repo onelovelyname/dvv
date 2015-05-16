@@ -1,0 +1,23 @@
+{
+  "name": "dvv2",
+  "version": "1.0.0",
+  "homepage": "https://github.com/courageous-trapeze/dvv",
+  "authors": [
+    "TBD"
+  ],
+  "main": "index.html",
+  "moduleType": [
+    "node"
+  ],
+  "license": "TBD",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "delta-e": "~0.0.7"
+  }
+}

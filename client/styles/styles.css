@@ -93,7 +93,6 @@ h1 {
   width: 100%;
 }
 
-<<<<<<< HEAD
 .modified-image {
   color: #E1499A;
   display: none;
@@ -105,7 +104,6 @@ h1 {
   width: 100px;
 }
 
-=======
 .progress-heading {
   color: #fff;
   font-size: 14px;
@@ -141,8 +139,6 @@ h1 {
   width: 300px;
 }
 
-
->>>>>>> finish findColor algorithm and work-in-progress client update in D3
 @-webkit-keyframes redPulse {
   from {
     fill: #E1499A;

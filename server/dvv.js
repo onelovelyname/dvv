@@ -200,12 +200,10 @@ dvv.start = function(){
         delete pendingPackets[data.id];
         var redGrayCounter = data.result.slice(data.result.length - 2);
         data.result = data.result.slice(0, data.result.length - 2);
-        console.log(redGrayCounter);
-        console.log("completed listener", data.result);
         
         completedPackets.insert(data);
 
-        console.log(completedPackets);
+        console.log('completedPackets:', completedPackets);
 				var clientId = socket.conn.id;
 				scoreBoard[clientId]++;
 
